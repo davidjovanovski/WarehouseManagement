@@ -10,6 +10,7 @@ import personal.warehousemanagementsystem.models.enums.Role;
 @AllArgsConstructor
 @Data
 @Entity
+@Table(name = "Users")
 public class User{
 
     @Id
