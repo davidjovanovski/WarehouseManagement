@@ -2,8 +2,9 @@ package personal.warehousemanagementsystem.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -23,20 +24,21 @@ public class Order{
     private User user;
 
     @Column(nullable = false, unique = true)
-    private int invoice_number;
+    private int invoiceNumber;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> items;
 
-    private int total_price;
+    private int totalPrice;
 
-    private LocalDateTime created_at;
+    @CreationTimestamp
+    private LocalDate createdAt;
 
-    public Order(int invoice_number, List<OrderItem> items, int total_price, LocalDateTime created_at, User user){
-        this.invoice_number = invoice_number;
+    public Order(int invoiceNumber, List<OrderItem> items, int totalPrice, LocalDate createdAt, User user){
+        this.invoiceNumber = invoiceNumber;
         this.items = items;
-        this.total_price = total_price;
-        this.created_at = created_at;
+        this.totalPrice = totalPrice;
+        this.createdAt = createdAt;
         this.user = user;
     }
 }
