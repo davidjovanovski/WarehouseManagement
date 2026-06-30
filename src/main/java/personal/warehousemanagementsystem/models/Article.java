@@ -2,6 +2,7 @@ package personal.warehousemanagementsystem.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+import personal.warehousemanagementsystem.models.enums.Status;
 
 @Getter
 @Setter
@@ -24,6 +25,9 @@ public class Article {
     @Column(nullable = false)
     private int quantity;
 
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     @ManyToOne
     @JoinColumn(name = "company_id", nullable = false)
     private Company company;
@@ -32,11 +36,14 @@ public class Article {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    public Article(String title, String barcode, int price, int quantity, Company company, Category category) {
+
+
+    public Article(String title, String barcode, int price, int quantity, Status status, Company company, Category category) {
         this.title = title;
         this.barcode = barcode;
         this.price = price;
         this.quantity = quantity;
+        this.status = status;
         this.company = company;
         this.category = category;
     }
