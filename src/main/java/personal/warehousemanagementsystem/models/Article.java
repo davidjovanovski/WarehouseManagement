@@ -2,7 +2,6 @@ package personal.warehousemanagementsystem.models;
 
 import jakarta.persistence.*;
 import lombok.*;
-import personal.warehousemanagementsystem.models.enums.Status;
 
 @Getter
 @Setter

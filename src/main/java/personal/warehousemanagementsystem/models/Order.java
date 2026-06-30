@@ -27,7 +27,7 @@ public class Order{
     @Column(nullable = false, unique = true)
     private int invoiceNumber;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> items;
 
     private int totalPrice;
@@ -38,12 +38,11 @@ public class Order{
     @CreationTimestamp
     private LocalDate createdAt;
 
-    public Order(int invoiceNumber, List<OrderItem> items, int totalPrice, Status status, LocalDate createdAt, User user){
+    public Order(User user, int invoiceNumber, List<OrderItem> items, Status status){
         this.invoiceNumber = invoiceNumber;
         this.items = items;
-        this.totalPrice = totalPrice;
         this.status = status;
-        this.createdAt = createdAt;
         this.user = user;
+        this.totalPrice = items.stream().mapToInt(item -> item.getQuantity() * item.getPrice()).sum();
     }
 }
