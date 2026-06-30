@@ -3,6 +3,7 @@ package personal.warehousemanagementsystem.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import personal.warehousemanagementsystem.models.Order;
+import personal.warehousemanagementsystem.models.User;
 import personal.warehousemanagementsystem.models.enums.Status;
 
 
@@ -12,9 +13,13 @@ import java.util.Optional;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    Optional<Order> findByInvoiceNumber(int invoiceNumber);
+    Optional<Order> findOrderByInvoiceNumber(int invoiceNumber);
 
-    Optional<Order> findByCreatedAtBetween(LocalDate start, LocalDate end);
+    List<Order> findOrderByCreatedAt(LocalDate date);
 
-    List<Order> findByStatus(Status status);
+    List<Order> findOrderByCreatedAtBetween(LocalDate start, LocalDate end);
+
+    List<Order> findOrderByStatus(Status status);
+
+    List<Order> findOrdersByUser(User user);
 }
