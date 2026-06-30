@@ -3,6 +3,7 @@ package personal.warehousemanagementsystem.models;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import personal.warehousemanagementsystem.models.enums.Status;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -31,13 +32,17 @@ public class Order{
 
     private int totalPrice;
 
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     @CreationTimestamp
     private LocalDate createdAt;
 
-    public Order(int invoiceNumber, List<OrderItem> items, int totalPrice, LocalDate createdAt, User user){
+    public Order(int invoiceNumber, List<OrderItem> items, int totalPrice, Status status, LocalDate createdAt, User user){
         this.invoiceNumber = invoiceNumber;
         this.items = items;
         this.totalPrice = totalPrice;
+        this.status = status;
         this.createdAt = createdAt;
         this.user = user;
     }
