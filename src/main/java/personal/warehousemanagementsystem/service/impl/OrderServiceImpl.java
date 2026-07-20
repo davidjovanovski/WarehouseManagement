@@ -66,10 +66,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order update(Long id, List<OrderItem> items, Status status) {
+    public Order update(Long id, List<OrderItem> items, int totalPrice, Status status) {
         Order order = orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException(id));
         order.setItems(items);
         order.setStatus(status);
+        order.setTotalPrice(items.stream().mapToInt(item -> item.getQuantity() * item.getPrice()).sum());
         return orderRepository.save(order);
     }
 

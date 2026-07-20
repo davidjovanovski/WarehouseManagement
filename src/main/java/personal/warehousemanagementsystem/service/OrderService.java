@@ -23,7 +23,7 @@ public interface OrderService {
 
     Order create(String username, int invoiceNumber, List<OrderItem> items, Status status);
 
-    Order update(Long id, List<OrderItem> items, Status status);
+    Order update(Long id, List<OrderItem> items, int totalPrice, Status status);
 
     void delete(Long id);
 }

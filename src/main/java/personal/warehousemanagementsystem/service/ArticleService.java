@@ -1,8 +1,6 @@
 package personal.warehousemanagementsystem.service;
 
 import personal.warehousemanagementsystem.models.Article;
-import personal.warehousemanagementsystem.models.Category;
-import personal.warehousemanagementsystem.models.Company;
 
 import java.util.List;
 
