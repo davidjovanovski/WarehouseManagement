@@ -53,13 +53,6 @@ public class WebSecurityConfig {
         return http.build();
     }
 
-//    @Bean
-//    public UserDetailsService userDetailsService(){
-//        UserDetails admin = User.builder().username("David").password("david").roles("ADMIN").build();
-//        UserDetails user = User.builder().username("Teona").password("teona").roles("USER").build();
-//        return new InMemoryUserDetailsManager(admin, user);
-//    }
-
     @Bean
     public AuthenticationManager authManager(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder =
