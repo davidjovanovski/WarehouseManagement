@@ -1,5 +1,6 @@
 package personal.warehousemanagementsystem.service;
 
+import personal.warehousemanagementsystem.DTOs.OrderItemDTO;
 import personal.warehousemanagementsystem.models.Order;
 import personal.warehousemanagementsystem.models.OrderItem;
 import personal.warehousemanagementsystem.models.enums.Status;
@@ -13,7 +14,7 @@ public interface OrderService {
 
     Optional<Order> findOrdersByInvoiceNumber(int invoiceNumber);
 
-    Order create(String username, int invoiceNumber, List<OrderItem> items, Status status);
+    Order create(String username, int invoiceNumber, List<OrderItemDTO> items, Status status);
 
     Order update(Long id, List<OrderItem> items, Status status);
 
