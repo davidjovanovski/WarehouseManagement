@@ -66,7 +66,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order update(Long id, List<OrderItem> items, int totalPrice, Status status) {
+    public Order update(Long id, List<OrderItem> items, Status status) {
         Order order = orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException(id));
         order.setItems(items);
         order.setStatus(status);
