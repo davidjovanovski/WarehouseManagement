@@ -9,6 +9,7 @@ import personal.warehousemanagementsystem.models.enums.Status;
 import personal.warehousemanagementsystem.models.exceptions.OrderNotFoundException;
 import personal.warehousemanagementsystem.repository.OrderRepository;
 import personal.warehousemanagementsystem.repository.UserRepository;
+import personal.warehousemanagementsystem.service.OrderFilterSpecification;
 import personal.warehousemanagementsystem.service.OrderService;
 
 import java.time.LocalDate;
@@ -28,34 +29,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> listOrders() {
-        return orderRepository.findAll();
-    }
-
-    @Override
-    public List<Order> findOrdersByUser(String username) {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
-        return orderRepository.findOrdersByUser(user);
-    }
-
-    @Override
-    public List<Order> findOrdersByStatus(Status status) {
-        return orderRepository.findOrderByStatus(status);
+    public List<Order> listOrders(String username, Status status, LocalDate start, LocalDate end) {
+        return orderRepository.findAll(OrderFilterSpecification.filter(username, status, start, end));
     }
 
     @Override
     public Optional<Order> findOrdersByInvoiceNumber(int invoiceNumber) {
         return orderRepository.findOrderByInvoiceNumber(invoiceNumber);
-    }
-
-    @Override
-    public List<Order> findOrdersByDate(LocalDate date) {
-        return orderRepository.findOrderByCreatedAt(date);
-    }
-
-    @Override
-    public List<Order> findOrdersByDateBetween(LocalDate start, LocalDate end) {
-        return orderRepository.findOrderByCreatedAtBetween(start, end);
     }
 
     @Override
