@@ -43,12 +43,12 @@ public class ArticleServiceImpl implements ArticleService {
         return this.articleRepository.findById(id).orElseThrow(() -> new ArticleNotFoundException(id));
     }
 
-    @Override
-    public Article update(Long id, String title, int price, int quantity, Long categoryId, Long companyId) {
+    public Article update(Long id, String title, String barcode, int price, int quantity, Long companyId, Long categoryId) {
         Category category = categoryService.findById(categoryId);
         Company company = companyService.findById(companyId);
         Article article = this.findById(id);
         article.setTitle(title);
+        article.setBarcode(barcode);
         article.setPrice(price);
         article.setQuantity(quantity);
         article.setCompany(company);

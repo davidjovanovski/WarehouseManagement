@@ -11,7 +11,7 @@ public interface ArticleService {
 
     Article create(String title, String barcode, int price, int quantity, Long companyId, Long categoryId);
 
-    Article update(Long id, String title, int price, int quantity, Long companyId, Long categoryId);
+    Article update(Long id, String title, String barcode, int price, int quantity, Long companyId, Long categoryId);
 
     void delete(Long id);
 }
