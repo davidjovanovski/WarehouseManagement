@@ -1,5 +1,6 @@
 package personal.warehousemanagementsystem.web;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -8,6 +9,7 @@ import personal.warehousemanagementsystem.DTOs.CreateOrderDTO;
 import personal.warehousemanagementsystem.models.Order;
 import personal.warehousemanagementsystem.models.User;
 import personal.warehousemanagementsystem.models.enums.Status;
+import personal.warehousemanagementsystem.repository.OrderRepository;
 import personal.warehousemanagementsystem.service.OrderService;
 
 import java.time.LocalDate;
@@ -15,14 +17,12 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/orders")
 public class OrderController {
 
     private final OrderService orderService;
-
-    public OrderController(OrderService orderService){
-        this.orderService = orderService;
-    }
+    private final OrderRepository orderRepository;
 
     @GetMapping
     public List<Order> listOrders(@RequestParam(required = false) String username,
@@ -38,8 +38,12 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<Order> create(@RequestBody CreateOrderDTO dto, @AuthenticationPrincipal User user){
+    public ResponseEntity<Order> create(@RequestBody CreateOrderDTO dto,
+                                        @AuthenticationPrincipal User user){
         Order order = orderService.create(user.getUsername(), dto.getInvoiceNumber(), dto.getItems(), dto.getStatus());
+//        if(order == null){
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+//        }
         return ResponseEntity.status(HttpStatus.CREATED).body(order);
     }
 

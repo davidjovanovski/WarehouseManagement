@@ -21,6 +21,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -56,10 +57,10 @@ public class OrderServiceImpl implements OrderService {
         List<OrderItem> orderItems = items.stream().map(dto -> {
             Article article = articleRepository.findById(dto.getArticleId()).orElseThrow( () -> new ArticleNotFoundException(dto.getArticleId()));
             return new OrderItem(order, article, dto.getQuantity(), dto.getPrice());
-        }).toList();//konverzija DTO->entity instance za OrderItems
+        }).collect(Collectors.toList());//konverzija DTO->entity instance za OrderItems
 
         orderItems.forEach(item -> item.setOrder(order));
-        order.setItems(orderItems); //dodavanje OrderItems na Order
+        order.setItems(orderItems);//dodavanje OrderItems na Order
         return orderRepository.save(order); //odnovo save zaedno so listata
     }
 
