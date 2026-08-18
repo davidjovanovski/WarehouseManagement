@@ -16,7 +16,7 @@ public interface OrderService {
 
     Order create(String username, int invoiceNumber, List<OrderItemDTO> items, Status status);
 
-    Order update(Long id, List<OrderItem> items, Status status);
+    Order update(Long id, List<OrderItemDTO> items, Status status);
 
     void delete(Long id);
 }

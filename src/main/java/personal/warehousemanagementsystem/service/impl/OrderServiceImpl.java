@@ -2,6 +2,7 @@ package personal.warehousemanagementsystem.service.impl;
 
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import personal.warehousemanagementsystem.DTOs.OrderItemDTO;
 import personal.warehousemanagementsystem.models.Article;
 import personal.warehousemanagementsystem.models.Order;
@@ -17,6 +18,7 @@ import personal.warehousemanagementsystem.service.OrderFilterSpecification;
 import personal.warehousemanagementsystem.service.OrderService;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,24 +45,37 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findOrderByInvoiceNumber(invoiceNumber);
     }
 
+    @Transactional //go pravi metodot transakcija, ako ne pominat 2ta saves, revert
     @Override
     public Order create(String username, int invoiceNumber, List<OrderItemDTO> items, Status status) {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
+
+        Order order = new Order(user, invoiceNumber, new ArrayList<>(), status);
+        orderRepository.save(order); //save za da dobijam order, da ne e null
+
         List<OrderItem> orderItems = items.stream().map(dto -> {
             Article article = articleRepository.findById(dto.getArticleId()).orElseThrow( () -> new ArticleNotFoundException(dto.getArticleId()));
-            return new OrderItem(null, article, dto.getQuantity(), dto.getPrice());
-        }).toList();
+            return new OrderItem(order, article, dto.getQuantity(), dto.getPrice());
+        }).toList();//konverzija DTO->entity instance za OrderItems
 
-        Order order = new Order(user,invoiceNumber, orderItems, status);
-        return orderRepository.save(order);
+        orderItems.forEach(item -> item.setOrder(order));
+        order.setItems(orderItems); //dodavanje OrderItems na Order
+        return orderRepository.save(order); //odnovo save zaedno so listata
     }
 
     @Override
-    public Order update(Long id, List<OrderItem> items, Status status) {
+    public Order update(Long id, List<OrderItemDTO> items, Status status) {
         Order order = orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException(id));
-        order.setItems(items);
+
+        List<OrderItem> orderItems = items.stream().map(dto -> {
+            Article article = articleRepository.findById(dto.getArticleId())
+                    .orElseThrow(() -> new ArticleNotFoundException(dto.getArticleId()));
+            return new OrderItem(null, article, dto.getQuantity(), dto.getPrice());
+        }).toList();
+
+        order.setItems(orderItems);
         order.setStatus(status);
-        order.setTotalPrice(items.stream().mapToInt(item -> item.getQuantity() * item.getPrice()).sum());
+        order.setTotalPrice(orderItems.stream().mapToInt(item -> item.getQuantity() * item.getPrice()).sum());
         return orderRepository.save(order);
     }
 
