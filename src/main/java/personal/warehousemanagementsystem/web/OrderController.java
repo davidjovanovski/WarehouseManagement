@@ -9,7 +9,6 @@ import personal.warehousemanagementsystem.DTOs.CreateOrderDTO;
 import personal.warehousemanagementsystem.models.Order;
 import personal.warehousemanagementsystem.models.User;
 import personal.warehousemanagementsystem.models.enums.Status;
-import personal.warehousemanagementsystem.repository.OrderRepository;
 import personal.warehousemanagementsystem.service.OrderService;
 
 import java.time.LocalDate;
@@ -22,7 +21,6 @@ import java.util.Optional;
 public class OrderController {
 
     private final OrderService orderService;
-    private final OrderRepository orderRepository;
 
     @GetMapping
     public List<Order> listOrders(@RequestParam(required = false) String username,

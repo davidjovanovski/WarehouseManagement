@@ -1,5 +1,6 @@
 package personal.warehousemanagementsystem.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,6 +24,7 @@ public class User implements UserDetails{
     @Column(unique = true)
     private String username;
 
+    @JsonIgnore
     @ToString.Exclude
     private String password;
 
